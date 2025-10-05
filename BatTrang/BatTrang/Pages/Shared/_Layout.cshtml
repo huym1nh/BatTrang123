@@ -3,42 +3,77 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BatTrang</title>
+    <title>@ViewData["Title"] - Bat Trang Hamory</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BatTrang.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header class="bt-header border-bottom bg-white">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">BatTrang</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-page="/Index">
+                    <img src="~/img/logo.png" class="bt-logo me-2" />
+                    <span class="fw-semibold">BÁT TRÀNG HAMORY</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#btNavbar" aria-controls="btNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+                <div class="collapse navbar-collapse" id="btNavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3">
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Products">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about">About us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#support">Support</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#cart" aria-label="Cart"><i class="bi bi-bag"></i></a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container py-3">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="bt-footer border-top mt-5 pt-5 pb-4 bg-white">
         <div class="container">
-            &copy; 2025 - BatTrang - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="row gy-4">
+                <div class="col-12 col-md-3">
+                    <a class="navbar-brand d-flex align-items-center mb-2" asp-area="" asp-page="/Index">
+                        <img src="~/img/logo.png" class="bt-logo me-2" />
+                        <span class="fw-semibold">BÁT TRÀNG HAMORY</span>
+                    </a>
+                    <p class="small text-muted mb-0">Handcrafted pottery made in Việt Nam, modern styles, plus a calming story.</p>
+                </div>
+                <div class="col-6 col-md-2">
+                    <h6 class="fw-semibold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Index">Home</a></li>
+                        <li><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Products">Products</a></li>
+                        <li><a class="link-secondary text-decoration-none" href="#about">About</a></li>
+                        <li><a class="link-secondary text-decoration-none" href="#support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4">
+                    <h6 class="fw-semibold mb-3">Contact</h6>
+                    <div class="small text-muted">Làng nghề Bát Tràng - Gia Lâm - Hà Nội</div>
+                    <div class="small text-muted">Phone: 0123 456 789</div>
+                    <div class="small text-muted">Email: info@battrang.vn</div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <h6 class="fw-semibold mb-3">Newsletter</h6>
+                    <form class="d-flex gap-2">
+                        <input class="form-control" type="email" placeholder="Your email" aria-label="Email" />
+                        <button class="btn btn-outline-secondary" type="button">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top small text-muted">
+                <div>© 2025 BÁT TRÀNG HAMORY. All rights reserved.</div>
+                <div><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Privacy">Privacy</a></div>
+            </div>
         </div>
     </footer>
 

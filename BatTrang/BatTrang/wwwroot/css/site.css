@@ -20,3 +20,59 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* --- Brand tweaks --- */
+.bt-logo { height: 34px; width: auto; }
+.bt-header .nav-link { color: #333; }
+.bt-header .nav-link:hover { color: #198754; }
+
+/* --- Hero Banner --- */
+.bt-hero-banner { margin-top: 1rem; }
+.bt-hero-banner-img { max-height: 520px; object-fit: cover; object-position: center; border-radius: .75rem; box-shadow: 0 6px 20px rgba(0,0,0,.06); background:#f6f7f6; }
+
+/* --- Featured --- */
+.bt-featured { position: relative; }
+.bt-featured-outline { position:absolute; inset:auto 0 0 0; height: 1px; background: #eee; }
+.bt-card { border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,.03); }
+.bt-card-img { background: url('/img/product-placeholder.jpg') center/cover no-repeat, #f5f5f5; }
+
+/* --- Story --- */
+.bt-story { background: #fafafa; }
+
+/* --- Category Filter --- */
+.bt-category-filter .list-group-item {
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.bt-category-filter .list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.bt-category-filter .list-group-item.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.bt-category-filter .list-group-item.active .badge {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white;
+}
+
+.bt-category-filter .badge {
+    font-size: 0.75em;
+    padding: 0.25em 0.5em;
+}
+
+/* --- Product Grid --- */
+.bt-product-grid .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bt-product-grid .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}

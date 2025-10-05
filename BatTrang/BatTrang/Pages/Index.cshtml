@@ -4,7 +4,70 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<section class="bt-hero-banner">
+    <img src="~/img/hero.jpg" alt="Banner" class="w-100 d-block bt-hero-banner-img" />
+    
+</section>
+
+
+<section id="products" class="bt-featured py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="fw-semibold">Featured Collection</h2>
+            <p class="text-muted">Khám phá các sản phẩm được ưa chuộng, tôn vinh vẻ đẹp thủ công.</p>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var p in Model.FeaturedProducts)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card h-100 bt-card">
+                        <div class="ratio ratio-4x3 rounded-top overflow-hidden">
+                            @if (!string.IsNullOrEmpty(p.ImageUrl))
+                            {
+                                <img src="@p.ImageUrl" class="w-100 h-100 object-fit-cover" alt="@p.Name" />
+                            }
+                            else
+                            {
+                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
+                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">@p.Name</h6>
+                            <div class="small text-muted mb-2">@p.Category?.Name</div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="#" class="link-success text-decoration-none small">View Details</a>
+                                <span class="small text-muted">@p.Price.ToString("C0")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/Products" class="btn btn-outline-secondary">View All Items</a>
+        </div>
+    </div>
+    <div class="bt-featured-outline"></div>
+</section>
+
+
+<section id="about" class="bt-story py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h3 class="fw-semibold">Our Story</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+                <p class="text-muted">Tại Bát Tràng Hamory, chúng tôi tin vào vẻ đẹp của sự thủ công. Mỗi sản phẩm là sự kết hợp giữa truyền thống và hiện đại, mang hơi thở của đất trời Việt Nam. Từng đường nét được chăm chút tỉ mỉ, đem đến trải nghiệm gần gũi và bền bỉ cho không gian sống của bạn.</p>
+                <div class="text-center mt-3">
+                    <a class="btn btn-outline-dark btn-sm" href="#">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -21,12 +21,16 @@ public partial class ExeContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning Connection string should be provided via DI; this fallback is only used if not configured.
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("server=MSI\\SQLEXPRESS;database=exe;uid=sa;pwd=123456;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-F4JA3S4;database=BatTrangHamony;uid=sa;pwd=123;TrustServerCertificate=True;");
         }
     }
 
@@ -93,6 +97,51 @@ public partial class ExeContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<Order>(e =>
+        {
+            e.ToTable("orders");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("id");
+
+            e.Property(x => x.OrderCode).HasColumnName("order_code").HasMaxLength(32).IsRequired();
+            e.Property(x => x.UserId).HasColumnName("user_id");
+            e.Property(x => x.Status).HasColumnName("status").HasMaxLength(20).IsRequired();
+            e.Property(x => x.PaymentMethod).HasColumnName("payment_method").HasMaxLength(10).IsRequired();
+
+            e.Property(x => x.Subtotal).HasColumnName("subtotal").HasColumnType("decimal(12,2)");
+            e.Property(x => x.ShippingFee).HasColumnName("shipping_fee").HasColumnType("decimal(12,2)");
+            e.Property(x => x.Discount).HasColumnName("discount").HasColumnType("decimal(12,2)");
+            e.Property(x => x.Total).HasColumnName("total").HasColumnType("decimal(12,2)");
+            e.Property(x => x.Note).HasColumnName("note").HasMaxLength(500);
+
+            e.Property(x => x.FullName).HasColumnName("full_name").HasMaxLength(150).IsRequired();
+            e.Property(x => x.Phone).HasColumnName("phone").HasMaxLength(30).IsRequired();
+            e.Property(x => x.Email).HasColumnName("email").HasMaxLength(200);
+            e.Property(x => x.Address).HasColumnName("address").HasMaxLength(500).IsRequired();
+            e.Property(x => x.Ward).HasColumnName("ward").HasMaxLength(200);
+            e.Property(x => x.District).HasColumnName("district").HasMaxLength(200);
+            e.Property(x => x.Province).HasColumnName("province").HasMaxLength(200);
+
+            e.Property(x => x.CreatedAt).HasColumnName("created_at");
+            e.Property(x => x.PaidAt).HasColumnName("paid_at");
+        });
+
+        // === OrderItem ===
+        modelBuilder.Entity<OrderItem>(e =>
+        {
+            e.ToTable("order_items");
+            e.HasKey(x => x.Id);
+            e.Property(x => x.Id).HasColumnName("id");
+
+            e.Property(x => x.OrderId).HasColumnName("order_id");
+            e.Property(x => x.ProductId).HasColumnName("product_id");
+            e.Property(x => x.ProductName).HasColumnName("product_name").HasMaxLength(200).IsRequired();
+            e.Property(x => x.UnitPrice).HasColumnName("unit_price").HasColumnType("decimal(12,2)");
+            e.Property(x => x.Quantity).HasColumnName("quantity");
+
+            e.HasOne(x => x.Order).WithMany(o => o.Items).HasForeignKey(x => x.OrderId);
         });
 
         OnModelCreatingPartial(modelBuilder);

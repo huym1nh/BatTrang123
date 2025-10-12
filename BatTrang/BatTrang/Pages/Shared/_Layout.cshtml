@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BatTrang.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 <body>
     <header class="bt-header border-bottom bg-white">
@@ -34,7 +35,14 @@
                                 Support
                             </a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="#cart" aria-label="Cart"><i class="bi bi-bag"></i></a></li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative" href="/Cart" aria-label="Cart">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                                    0
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -98,6 +106,25 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Cart Count Script -->
+    <script>
+        // Load cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/Cart?handler=CartCount')
+                .then(response => response.json())
+                .then(data => {
+                    const cartCountElement = document.getElementById('cartCount');
+                    if (cartCountElement) {
+                        cartCountElement.textContent = data.cartCount;
+                        cartCountElement.style.display = data.cartCount > 0 ? 'inline' : 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading cart count:', error);
+                });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

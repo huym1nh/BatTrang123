@@ -1,0 +1,180 @@
+﻿@page "{code?}"
+@model BatTrang.Pages.OrderSuccessModel
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<style>
+    .success-hero {
+      background: linear-gradient(145deg, #e8fff2 0%, #f7fffb 100%);
+      border: 1px solid #d7f5e3; border-radius: 1rem;
+    }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #d1fae5; color: #0f5132;
+    }
+    .step {
+      display:flex; gap:.75rem; align-items:flex-start;
+    }
+    .step .dot {
+      width: 10px; height: 10px; border-radius: 50%; margin-top: .4rem;
+      background:#20c997;
+    }
+    .badge-soft {
+      background: rgba(25,135,84,.12); color:#198754; border:1px solid rgba(25,135,84,.2);
+    }
+    .copy-btn {
+      border: 1px dashed #ced4da;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="success-hero p-4 p-lg-5 mb-4 text-center">
+        <div class="success-icon mx-auto mb-3">
+            <i class="fa-solid fa-check fa-xl"></i>
+        </div>
+        <h2 class="fw-bold mb-2">Đặt hàng thành công!</h2>
+        <p class="text-muted mb-0">Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Thông tin đơn hàng -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fa-regular fa-clipboard me-2"></i>Thông tin đơn hàng</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+                        <div>
+                            <div class="text-muted small mb-1">Mã đơn hàng</div>
+                            <div class="d-flex align-items-center gap-2">
+                                <code class="fs-6">@Model.OrderCode</code>
+                                <button type="button" class="btn btn-light btn-sm copy-btn" onclick="copyCode('@Model.OrderCode')">
+                                    <i class="fa-regular fa-copy me-1"></i>Sao chép
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-md-end">
+                            <div class="text-muted small mb-1">Phương thức thanh toán</div>
+                            @if (Model.PaymentMethod?.ToUpperInvariant() == "COD")
+                            {
+                                <span class="badge rounded-pill bg-secondary">COD (Thanh toán khi nhận hàng)</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill badge-soft">Thanh toán trực tiếp</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="text-muted small mb-1">Trạng thái</div>
+                                <div class="fw-semibold text-success"><i class="fa-solid fa-circle-check me-1"></i>Đã tạo đơn</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <div class="text-muted small mb-1">Thời gian</div>
+                                <div class="fw-semibold">@DateTime.Now.ToString("HH:mm dd/MM/yyyy")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <!-- Hướng dẫn theo phương thức -->
+                    @if (Model.PaymentMethod?.ToUpperInvariant() == "COD")
+                    {
+                        <div class="alert alert-secondary mb-0">
+                            <h6 class="fw-semibold mb-2"><i class="fa-solid fa-truck me-2"></i>Hướng dẫn thanh toán COD</h6>
+                            <div class="step mb-1"><span class="dot"></span><span>Đơn hàng sẽ được xác nhận và đóng gói.</span></div>
+                            <div class="step mb-1"><span class="dot"></span><span>Nhân viên giao hàng liên hệ để giao đến địa chỉ của bạn.</span></div>
+                            <div class="step"><span class="dot"></span><span>Thanh toán tiền mặt hoặc quẹt thẻ khi nhận hàng.</span></div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mb-0">
+                            <h6 class="fw-semibold mb-2"><i class="fa-solid fa-building-columns me-2"></i>Hướng dẫn thanh toán trực tiếp</h6>
+                            <ul class="mb-2 ps-3">
+                                <li class="mb-1">Trả tại cửa hàng: vui lòng đọc mã đơn <strong>@Model.OrderCode</strong> khi đến quầy.</li>
+                                <li>
+                                    Chuyển khoản ngân hàng:
+                                    <div class="mt-2 small">
+                                        <div><strong>Ngân hàng:</strong> ABC Bank</div>
+                                        <div><strong>Số tài khoản:</strong> 123456789</div>
+                                        <div><strong>Chủ tài khoản:</strong> Công ty Gốm Bát Tràng</div>
+                                        <div><strong>Nội dung chuyển khoản:</strong> @Model.OrderCode + SĐT</div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <small>Sau khi thanh toán, vui lòng giữ lại chứng từ. Cửa hàng sẽ xác nhận và chuẩn bị hàng.</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Hành động tiếp theo -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fa-regular fa-circle-check me-2"></i>Việc bạn có thể làm tiếp</h5>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-success w-100 mb-2" href="/Products">
+                        <i class="fa-solid fa-bag-shopping me-2"></i>Tiếp tục mua sắm
+                    </a>
+                    <a class="btn btn-outline-primary w-100 mb-2" href="/Orders/@Model.OrderCode">
+                        <i class="fa-regular fa-file-lines me-2"></i>Xem chi tiết đơn hàng
+                    </a>
+                    <button class="btn btn-outline-secondary w-100" onclick="window.print()">
+                        <i class="fa-solid fa-print me-2"></i>In/Xuất biên nhận
+                    </button>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="text-primary"><i class="fa-regular fa-life-ring fa-lg"></i></div>
+                        <div>
+                            <div class="fw-semibold">Hỗ trợ khách hàng</div>
+                            <div class="text-muted small">Cần trợ giúp? Liên hệ hotline <a href="tel:0123456789">0123 456 789</a> hoặc email <a href="mailto:support@battrang.vn">support@battrang.vn</a>.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-muted small mt-3">
+                Mã đơn: <strong>@Model.OrderCode</strong> • Phương thức: <strong>@Model.PaymentMethod</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function copyCode(code){
+          navigator.clipboard?.writeText(code).then(() => {
+            showToast('Đã sao chép mã đơn: ' + code);
+          }).catch(() => alert('Không thể sao chép, vui lòng chọn và copy thủ công.'));
+        }
+        function showToast(msg){
+          const t = document.createElement('div');
+          t.className = 'toast align-items-center text-bg-dark border-0 position-fixed bottom-0 end-0 m-3';
+          t.role = 'alert'; t.ariaLive='assertive'; t.ariaAtomic='true';
+          t.innerHTML = `
+            <div class="d-flex">
+              <div class="toast-body">${msg}</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>`;
+          document.body.appendChild(t);
+          const toast = new bootstrap.Toast(t, { delay: 2000 });
+          toast.show();
+          toast._element.addEventListener('hidden.bs.toast', ()=> t.remove());
+        }
+    </script>
+}

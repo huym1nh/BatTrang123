@@ -1,0 +1,268 @@
+@page "/ProductDetail/{id}"
+@model BatTrang.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = Model.Product?.Name ?? "Product Detail";
+}
+
+@Html.AntiForgeryToken()
+
+@if (Model.Product == null)
+{
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>Sản phẩm không tồn tại</h1>
+                <p>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+                <a href="/Products" class="btn btn-primary">Quay lại danh sách sản phẩm</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="/Products">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="/Products?categoryId=@(Model.Product?.CategoryId ?? 0)">@(Model.Product?.Category?.Name ?? "Category")</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@(Model.Product?.Name ?? "Product")</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-12 col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="ratio ratio-1x1 rounded">
+                    @if (!string.IsNullOrEmpty(Model.Product?.ImageUrl))
+                    {
+                        <img src="@Model.Product.ImageUrl" class="w-100 h-100 object-fit-cover rounded" alt="@(Model.Product?.Name ?? "Product")" />
+                    }
+                    else
+                    {
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light rounded">
+                            <i class="fas fa-image fa-4x text-muted"></i>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-12 col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <div class="mb-3">
+                        <span class="badge bg-primary mb-2">@(Model.Product?.Category?.Name ?? "Category")</span>
+                        <h1 class="h2 fw-bold mb-3">@(Model.Product?.Name ?? "Product")</h1>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Product?.Description))
+                    {
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-2">Mô tả sản phẩm</h5>
+                            <p class="text-muted lh-lg">@Model.Product.Description</p>
+                        </div>
+                    }
+
+                    <div class="mt-auto">
+                        <div class="row align-items-center mb-4">
+                            <div class="col-6">
+                                <div class="h3 text-success fw-bold mb-0">@(Model.Product?.Price.ToString("C0") ?? "0")</div>
+                                <small class="text-muted">Giá đã bao gồm VAT</small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary btn-lg me-2" onclick="addToCart(@(Model.Product?.Id ?? 0))" data-product-id="@(Model.Product?.Id ?? 0)">
+                                        <i class="fas fa-shopping-cart me-2"></i>Thêm vào giỏ
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <!-- Debug info -->
+                                <div class="mt-2">
+                                    <small class="text-muted">Product ID: @(Model.Product?.Id ?? 0)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Features -->
+                        <div class="border-top pt-3">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="text-primary mb-1">
+                                        <i class="fas fa-shield-alt fa-2x"></i>
+                                    </div>
+                                    <small class="text-muted">Bảo hành chính hãng</small>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-primary mb-1">
+                                        <i class="fas fa-truck fa-2x"></i>
+                                    </div>
+                                    <small class="text-muted">Giao hàng miễn phí</small>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-primary mb-1">
+                                        <i class="fas fa-undo fa-2x"></i>
+                                    </div>
+                                    <small class="text-muted">Đổi trả 7 ngày</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    @if (Model.RelatedProducts.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="fw-bold mb-4">Sản phẩm liên quan</h3>
+                <div class="row g-4">
+                    @foreach (var product in Model.RelatedProducts)
+                    {
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="card h-100 bt-card shadow-sm">
+                                <div class="ratio ratio-4x3 rounded-top overflow-hidden">
+                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                    {
+                                        <img src="@product.ImageUrl" class="w-100 h-100 object-fit-cover" alt="@product.Name" />
+                                    }
+                                    else
+                                    {
+                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
+                                            <i class="fas fa-image fa-2x text-muted"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title mb-2">@product.Name</h6>
+                                    <div class="small text-muted mb-2">
+                                        <i class="fas fa-tag me-1"></i>@product.Category?.Name
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(product.Description))
+                                    {
+                                        <p class="card-text small text-muted mb-3">@product.Description</p>
+                                    }
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <span class="h6 text-success mb-0">@product.Price.ToString("C0")</span>
+                                            <a href="/ProductDetail/@product.Id" class="btn btn-outline-primary btn-sm">Chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Back to Products -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="/Products?categoryId=@(Model.Product?.CategoryId ?? 0)" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách sản phẩm
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="fas fa-shopping-cart text-primary me-2"></i>
+            <strong class="me-auto">Giỏ hàng</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            <!-- Message will be inserted here -->
+        </div>
+    </div>
+</div>
+
+<script>
+function addToCart(productId) {
+    // Debug: Log productId
+    console.log('Adding product to cart, ID:', productId, 'Type:', typeof productId);
+    
+    // Get antiforgery token
+    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+    
+    fetch('/Cart?handler=AddToCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': token || ''
+        },
+        body: JSON.stringify({
+            productId: productId,
+            quantity: 1
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            showToast(data.message);
+            updateCartCount(data.cartCount);
+        } else {
+            showToast(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Có lỗi xảy ra khi thêm vào giỏ hàng', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toastElement = document.getElementById('cartToast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    toastMessage.textContent = message;
+    
+    // Update toast styling based on type
+    if (type === 'error') {
+        toastElement.classList.remove('bg-success');
+        toastElement.classList.add('bg-danger');
+    } else {
+        toastElement.classList.remove('bg-danger');
+        toastElement.classList.add('bg-success');
+    }
+    
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+}
+
+function updateCartCount(count) {
+    // Update cart count in header if exists
+    const cartCountElement = document.getElementById('cartCount');
+    if (cartCountElement) {
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = count > 0 ? 'inline' : 'none';
+    }
+}
+
+// Load cart count on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/Cart?handler=CartCount')
+        .then(response => response.json())
+        .then(data => {
+            updateCartCount(data.cartCount);
+        });
+});
+</script>
+}

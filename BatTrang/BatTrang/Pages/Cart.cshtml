@@ -61,12 +61,12 @@
                                 <!-- Quantity -->
                                 <div class="col-12 col-md-2 mb-3 mb-md-0">
                                     <div class="input-group input-group-sm">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(@item.ProductId, @(item.Quantity - 1))">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity(@item.ProductId)">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                         <input type="number" class="form-control text-center" value="@item.Quantity" min="1" 
                                                onchange="updateQuantity(@item.ProductId, this.value)" id="quantity-@item.ProductId">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity(@item.ProductId, @(item.Quantity + 1))">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity(@item.ProductId)">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
@@ -160,10 +160,25 @@
 </div>
 
 <script>
+function increaseQuantity(productId) {
+    const quantityInput = document.getElementById(`quantity-${productId}`);
+    const currentQuantity = parseInt(quantityInput.value) || 1;
+    const newQuantity = currentQuantity + 1;
+    updateQuantity(productId, newQuantity);
+}
+
+function decreaseQuantity(productId) {
+    const quantityInput = document.getElementById(`quantity-${productId}`);
+    const currentQuantity = parseInt(quantityInput.value) || 1;
+    const newQuantity = Math.max(1, currentQuantity - 1);
+    updateQuantity(productId, newQuantity);
+}
+
 function updateQuantity(productId, quantity) {
-    if (quantity < 1) {
-        removeFromCart(productId);
-        return;
+    // Validate quantity
+    quantity = parseInt(quantity);
+    if (isNaN(quantity) || quantity < 1) {
+        quantity = 1;
     }
 
     const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
@@ -176,7 +191,7 @@ function updateQuantity(productId, quantity) {
         },
         body: JSON.stringify({
             productId: productId,
-            quantity: parseInt(quantity)
+            quantity: quantity
         })
     })
     .then(response => {
@@ -188,14 +203,28 @@ function updateQuantity(productId, quantity) {
     .then(data => {
         if (data.success) {
             // Update UI
-            document.getElementById(`quantity-${productId}`).value = quantity;
-            document.getElementById(`subtotal-${productId}`).textContent = data.subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-            document.getElementById('cartTotal').textContent = data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-            document.getElementById('finalTotal').textContent = data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            const subtotalElement = document.getElementById(`subtotal-${productId}`);
+            const cartTotalElement = document.getElementById('cartTotal');
+            const finalTotalElement = document.getElementById('finalTotal');
+            const totalItemsElement = document.getElementById('totalItems');
+
+            if (quantityInput) quantityInput.value = quantity;
+            if (subtotalElement) subtotalElement.textContent = data.subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            if (cartTotalElement) cartTotalElement.textContent = data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            if (finalTotalElement) finalTotalElement.textContent = data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            if (totalItemsElement) totalItemsElement.textContent = data.cartCount;
             
             // Remove item if quantity is 0
             if (quantity <= 0) {
-                document.querySelector(`[data-product-id="${productId}"]`).remove();
+                const itemElement = document.querySelector(`[data-product-id="${productId}"]`);
+                if (itemElement) {
+                    itemElement.remove();
+                }
+                // Check if cart is empty and reload if needed
+                if (data.cartCount === 0) {
+                    setTimeout(() => location.reload(), 1000);
+                }
             }
             
             showToast(data.message);
@@ -235,12 +264,22 @@ function removeFromCart(productId) {
     .then(data => {
         if (data.success) {
             // Remove item from UI
-            document.querySelector(`[data-product-id="${productId}"]`).remove();
+            const itemElement = document.querySelector(`[data-product-id="${productId}"]`);
+            if (itemElement) {
+                itemElement.remove();
+            }
+            
+            // Update total items count
+            const totalItemsElement = document.getElementById('totalItems');
+            if (totalItemsElement) {
+                totalItemsElement.textContent = data.cartCount;
+            }
+            
             showToast(data.message);
             
             // Check if cart is empty
             if (data.cartCount === 0) {
-                location.reload();
+                setTimeout(() => location.reload(), 1000);
             }
         } else {
             showToast(data.message, 'error');

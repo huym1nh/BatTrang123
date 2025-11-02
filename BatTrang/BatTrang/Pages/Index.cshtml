@@ -1,73 +1,583 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Trang chủ";
 }
 
+<!-- Main Hero Layout: 2 Columns -->
+<section class="plantify-hero-layout" style="margin-top: 0;">
+    <div class="container-fluid g-0">
+        <div class="row g-0">
+            <!-- Left Column: Hero Section with Teal Background -->
+            <div class="col-lg-5 plantify-hero-left">
+                <div class="hero-content-wrapper">
+                    <h1 class="hero-main-title">Tinh hoa nở rộ từ bên trong</h1>
+                    <p class="hero-subtitle">Môi trường chúng ta sống và làm việc phản ánh thái độ và kỳ vọng của chúng ta. Mỗi sản phẩm gốm Bát Tràng mang đến sự hài hòa và vẻ đẹp cho không gian của bạn.</p>
+                    
+                    <div class="hero-buttons mt-4">
+                        <a href="/Products" class="btn-hero-primary">Mua ngay</a>
+                        <a href="#products" class="btn-hero-secondary">Khám phá sản phẩm <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
 
-<section class="bt-hero-banner">
-    <img src="~/img/hero.jpg" alt="Banner" class="w-100 d-block bt-hero-banner-img" />
-    
-</section>
+                    <!-- Featured Products Mini Grid -->
+                    <div class="hero-featured-grid mt-5">
+                        @{
+                            var featuredProducts = Model.FeaturedProducts.Take(3).ToList();
+                        }
+                        @if (featuredProducts.Count >= 2)
+                        {
+                            <div class="mini-product-card">
+                                <span class="product-badge badge-new">Mới</span>
+                                <img src="@featuredProducts[0].ImageUrl" alt="@featuredProducts[0].Name" />
+                            </div>
+                            <div class="mini-product-card">
+                                <span class="product-badge badge-popular">Phổ biến</span>
+                                <img src="@featuredProducts[1].ImageUrl" alt="@featuredProducts[1].Name" />
+                            </div>
+                        }
+                        @if (featuredProducts.Count >= 3)
+                        {
+                            <div class="mini-product-card-large">
+                                <span class="product-badge badge-featured">Nổi bật</span>
+                                <img src="@featuredProducts[2].ImageUrl" alt="@featuredProducts[2].Name" />
+                                <div class="product-info">
+                                    <h5>@featuredProducts[2].Name</h5>
+                                    <p class="small">@featuredProducts[2].Description</p>
+                                    <a href="/ProductDetail/@featuredProducts[2].Id" class="read-more">ĐỌC THÊM →</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
 
+                    <!-- Decorative Dots -->
+                    <div class="decorative-dots"></div>
+                </div>
+            </div>
 
-<section id="products" class="bt-featured py-5">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="fw-semibold">Featured Collection</h2>
-            <p class="text-muted">Khám phá các sản phẩm được ưa chuộng, tôn vinh vẻ đẹp thủ công.</p>
-        </div>
-
-        <div class="row g-4">
-            @foreach (var p in Model.FeaturedProducts)
-            {
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 bt-card">
-                        <div class="ratio ratio-4x3 rounded-top overflow-hidden">
-                            @if (!string.IsNullOrEmpty(p.ImageUrl))
+            <!-- Right Column: Content Section -->
+            <div class="col-lg-7 plantify-content-right">
+                <div class="content-wrapper">
+                    <!-- Colorful New Arrivals -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Bộ Sưu Tập Mới Đa Dạng</h2>
+                            <a href="/Products" class="view-all-link">xem tất cả</a>
+                        </div>
+                        <div class="product-grid-new">
+                            @foreach (var p in Model.FeaturedProducts.Take(4))
                             {
-                                <img src="@p.ImageUrl" class="w-100 h-100 object-fit-cover" alt="@p.Name" />
-                            }
-                            else
-                            {
-                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
-                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                <div class="product-item-square">
+                                    <img src="@p.ImageUrl" alt="@p.Name" />
+                                    <div class="product-info">
+                                        <p class="product-name">@p.Name</p>
+                                        <a href="/ProductDetail/@p.Id" class="info-link">thông tin chi tiết →</a>
+                                    </div>
                                 </div>
                             }
                         </div>
-                        <div class="card-body">
-                            <h6 class="card-title mb-1">@p.Name</h6>
-                            <div class="small text-muted mb-2">@p.Category?.Name</div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="/ProductDetail/@p.Id" class="link-success text-decoration-none small">View Details</a>
-                                <span class="small text-muted">@p.Price.ToString("C0")</span>
+                    </div>
+
+                    <!-- Plant Stands / Decorative Collections -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Bộ Sưu Tập Trang Trí</h2>
+                            <a href="/Products" class="view-all-link">xem thêm</a>
+                        </div>
+                        <div class="product-grid-stands">
+                            @foreach (var p in Model.FeaturedProducts.Take(3))
+                            {
+                                <div class="product-item-square">
+                                    <img src="@p.ImageUrl" alt="@p.Name" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Free Shipping Services -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Dịch Vụ Giao Hàng Miễn Phí</h2>
+                        </div>
+                        <p class="section-subtitle">Chỉ áp dụng trong cùng khu vực</p>
+                        <div class="service-info">
+                            <p><i class="fas fa-phone me-2"></i>Hotline: 0123 456 789</p>
+                            <p><i class="fas fa-envelope me-2"></i>Email: info@battrang.vn</p>
+                        </div>
+                        <div class="service-image">
+                            <div class="bg-service-image">
+                                <div class="decorative-jars"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
 
-        <div class="text-center mt-4">
-            <a href="/Products" class="btn btn-outline-secondary">View All Items</a>
-        </div>
-    </div>
-    <div class="bt-featured-outline"></div>
-</section>
-
-
-<section id="about" class="bt-story py-5">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h3 class="fw-semibold">Our Story</h3>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-9">
-                <p class="text-muted">Tại Bát Tràng Hamory, chúng tôi tin vào vẻ đẹp của sự thủ công. Mỗi sản phẩm là sự kết hợp giữa truyền thống và hiện đại, mang hơi thở của đất trời Việt Nam. Từng đường nét được chăm chút tỉ mỉ, đem đến trải nghiệm gần gũi và bền bỉ cho không gian sống của bạn.</p>
-                <div class="text-center mt-3">
-                    <a class="btn btn-outline-dark btn-sm" href="#">Learn More</a>
+                    <!-- Visit Us Section -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Ghé Thăm Chúng Tôi</h2>
+                        </div>
+                        <div class="visit-info">
+                            <p class="address">Làng nghề Bát Tràng, Gia Lâm</p>
+                            <p class="address">Hà Nội, Việt Nam</p>
+                            <p class="hours"><i class="far fa-clock me-2"></i>Giờ mở cửa: 8:00 - 18:00 hàng ngày</p>
+                            <button class="btn-get-directions">XEM CHỈ ĐƯỜNG</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Featured Products Horizontal Scroll -->
+<section id="products" class="featured-section-horizontal">
+    <div class="container-fluid">
+        <div class="section-header">
+            <h2 class="section-title">Sản Phẩm Nổi Bật</h2>
+            <a href="/Products" class="view-all-link">xem tất cả</a>
+        </div>
+        <div class="featured-products-grid">
+            @foreach (var p in Model.FeaturedProducts.Take(5))
+            {
+                <div class="featured-product-card">
+                    <img src="@p.ImageUrl" alt="@p.Name" />
+                    <div class="card-content">
+                        <h6>@p.Name</h6>
+                        <div class="price">@p.Price.ToString("C0")</div>
+                        <div class="color-options">
+                            <div class="color-dot" style="background: #6C757D;"></div>
+                            <div class="color-dot" style="background: #198754;"></div>
+                            <div class="color-dot" style="background: #DC3545;"></div>
+                            <div class="color-dot" style="background: #0D6EFD;"></div>
+                        </div>
+                        <button class="btn-buy">Mua</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+/* Plantify Style Variables */
+:root {
+    --teal-primary: #006b6a;
+    --teal-light: #009688;
+    --pink-light: #fff1f1;
+    --gray-text: #8f8f8f;
+}
+
+/* Remove default spacing */
+.plantify-hero-layout .container-fluid {
+    padding: 0;
+}
+
+/* Left Hero Column */
+.plantify-hero-left {
+    background: linear-gradient(135deg, var(--teal-primary) 0%, var(--teal-light) 100%);
+    color: white;
+    padding: 4rem 3rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
+}
+
+.hero-main-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    opacity: 0.95;
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.btn-hero-primary {
+    background: white;
+    color: var(--teal-primary);
+    padding: 1rem 3rem;
+    font-weight: 600;
+    border-radius: 0;
+    transition: all 0.3s;
+}
+
+.btn-hero-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    color: var(--teal-primary);
+}
+
+.btn-hero-secondary {
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.btn-hero-secondary:hover {
+    color: white;
+    opacity: 0.8;
+}
+
+/* Featured Products Mini Grid in Hero */
+.hero-featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 450px;
+}
+
+.mini-product-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.mini-product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.mini-product-card-large {
+    grid-column: 1 / -1;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.mini-product-card-large img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--teal-primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 3;
+}
+
+.product-info h5 {
+    color: var(--teal-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    color: var(--gray-text);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.read-more {
+    color: var(--teal-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Decorative Dots */
+.decorative-dots {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    width: 150px;
+    height: 100px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 2px, transparent 2px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+}
+
+/* Right Content Column */
+.plantify-content-right {
+    background: white;
+    padding: 3rem;
+}
+
+.content-wrapper {
+    max-width: 900px;
+}
+
+.content-section {
+    margin-bottom: 4rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: var(--teal-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.view-all-link {
+    color: var(--teal-primary);
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: lowercase;
+}
+
+.view-all-link:hover {
+    color: var(--teal-light);
+}
+
+/* Product Grids */
+.product-grid-new,
+.product-grid-stands {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.product-item-square {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-item-square img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.product-item-square:hover img {
+    transform: scale(1.05);
+}
+
+.product-info {
+    padding-top: 1rem;
+}
+
+.product-name {
+    color: var(--teal-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.info-link {
+    color: var(--gray-text);
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+/* Service Section */
+.section-subtitle {
+    color: var(--gray-text);
+    margin-bottom: 1.5rem;
+}
+
+.service-info {
+    margin-bottom: 2rem;
+}
+
+.service-info p {
+    margin-bottom: 0.5rem;
+    color: var(--gray-text);
+}
+
+.bg-service-image {
+    background: var(--pink-light);
+    height: 200px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.decorative-jars {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80%;
+    background-image: url('/img/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+}
+
+/* Visit Us Section */
+.visit-info .address {
+    margin-bottom: 0.5rem;
+    color: var(--gray-text);
+}
+
+.hours {
+    color: var(--gray-text);
+    margin-top: 1rem;
+}
+
+.btn-get-directions {
+    background: var(--teal-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    cursor: pointer;
+}
+
+/* Featured Products Horizontal Section */
+.featured-section-horizontal {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.featured-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.featured-product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.featured-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.featured-product-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-content h6 {
+    color: var(--teal-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.color-options {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.color-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-dot:hover {
+    transform: scale(1.2);
+}
+
+.btn-buy {
+    width: 100%;
+    background: var(--teal-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-buy:hover {
+    background: var(--teal-light);
+}
+
+/* Responsive Design */
+@@media (max-width: 992px) {
+    .plantify-hero-left {
+        min-height: auto;
+        padding: 3rem 2rem;
+    }
+    
+    .hero-main-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-featured-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    
+    .product-grid-new,
+    .product-grid-stands {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@@media (max-width: 768px) {
+    .plantify-hero-left,
+    .plantify-content-right {
+        padding: 2rem 1rem;
+    }
+    
+    .hero-main-title {
+        font-size: 2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .product-grid-new,
+    .product-grid-stands {
+        grid-template-columns: 1fr;
+    }
+    
+    .featured-products-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

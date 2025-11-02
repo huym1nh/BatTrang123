@@ -5,39 +5,102 @@
 }
 
 <style>
+    :root {
+        --teal:#006b6a;
+        --teal2:#009688;
+        --muted:#6c757d;
+    }
+
+    /* Top thank-you banner */
+    .order-hero {
+        background: linear-gradient(135deg,var(--teal),var(--teal2));
+        color:#fff;
+        padding:1.25rem 0;
+    }
+
+    .order-hero .order-code {
+        font-weight:800;
+        letter-spacing:.5px;
+    }
+
+    .order-hero .status-chip {
+        background: rgba(255,255,255,.2);
+        border:1px solid rgba(255,255,255,.35);
+        color:#fff;
+        padding:.25rem .6rem;
+        border-radius: 999px;
+        font-weight:700;
+    }
+
     /* Layout & invoice look */
     .invoice {
-        background: #fff;
-        border: 1px solid #e9ecef;
-        border-radius: 12px;
+        background:#fff;
+        border:1px solid #e9ecef;
+        border-radius: 16px;
+        box-shadow:0 6px 24px rgba(0,0,0,.06);
     }
 
     .invoice-header {
-        border-bottom: 1px solid #e9ecef;
+        border-bottom:1px solid #e9ecef;
+    }
+
+    .invoice h4 {
+        font-weight:800;
+        color:#1f2937;
     }
 
     .badge-soft {
         background: rgba(25,135,84,.12);
-        color: #198754;
-        border: 1px solid rgba(25,135,84,.2);
+        color:#198754;
+        border:1px solid rgba(25,135,84,.2);
+    }
+
+    .table-invoice thead th {
+        background:#f8f9fa;
+        font-weight:700;
     }
 
     .table-invoice th, .table-invoice td {
         vertical-align: middle;
     }
 
-    .totals-box .row > div {
-        padding: .25rem 0;
+    .table-invoice tbody tr:hover {
+        background:#fafafa;
     }
 
-        .totals-box .row > div strong {
-            font-weight: 600;
-        }
+    .totals-box {
+        border:1px solid #e9ecef;
+        border-radius:12px;
+    }
+
+    .totals-box .row > div {
+        padding:.35rem 0;
+    }
+
+    .totals-box .row > div strong {
+        font-weight:700;
+    }
+
+    .help-box {
+        background:#f8f9fa;
+        border:1px dashed #e9ecef;
+        border-radius:12px;
+        padding:1rem;
+    }
+
+    .help-box i {
+        color: var(--teal2);
+    }
+
+    .brand-small {
+        font-weight:800;
+        color: var(--teal);
+    }
 
     /* Print styles */
     @@media print {
         .no-print {
-            display: none !important;
+            display:none !important;
         }
 
         body {
@@ -51,10 +114,37 @@
         }
 
         .invoice {
-            border: none;
+            border:none;
+            box-shadow:none;
+        }
+
+        .order-hero {
+            padding:.25rem 0;
         }
     }
 </style>
+
+<!-- Hero banner -->
+<div class="order-hero">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+      <div>
+        <div class="small opacity-75">Cảm ơn bạn đã đặt hàng tại <span class="brand-small">Bát Tràng Hamory</span></div>
+        <h2 class="h4 mb-0">Hóa đơn/Chi tiết đơn hàng</h2>
+      </div>
+      <div class="text-md-end">
+        <div class="small">Mã đơn:</div>
+        <div class="order-code h5 mb-0">@Model.Order.OrderCode</div>
+        <div class="mt-1">
+            @if (Model.Order.Status?.ToUpperInvariant() == "PAID")
+            { <span class="status-chip"><i class="fa-solid fa-circle-check me-1"></i>ĐÃ THANH TOÁN</span> }
+            else
+            { <span class="status-chip"><i class="fa-regular fa-hourglass-half me-1"></i>@(Model.Order.Status ?? "CREATED")</span> }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 no-print">
@@ -166,13 +256,18 @@
     <!-- Totals -->
     <div class="row g-3">
       <div class="col-md-6">
-        <div class="small text-muted">
-          Cảm ơn bạn đã mua sắm! Nếu có thắc mắc về đơn hàng, vui lòng liên hệ hotline
-          <a href="tel:@Model.ShopPhone">@Model.ShopPhone</a>.
+        <div class="help-box">
+          <div class="d-flex align-items-start gap-2">
+            <i class="fa-regular fa-circle-question mt-1"></i>
+            <div class="small text-muted">
+              Cảm ơn bạn đã mua sắm! Nếu có thắc mắc về đơn hàng, vui lòng liên hệ hotline
+              <a href="tel:@Model.ShopPhone">@Model.ShopPhone</a> hoặc reply email xác nhận đơn.
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="border rounded p-3 totals-box">
+        <div class="p-3 totals-box">
           <div class="row">
             <div class="col">Tạm tính</div>
             <div class="col text-end"><strong>@Model.FormatCurrency(Model.Order.Subtotal)</strong></div>

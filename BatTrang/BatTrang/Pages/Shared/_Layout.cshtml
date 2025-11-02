@@ -26,8 +26,6 @@
                     </div>
                     <div class="col-md-4">
                         <ul class="d-flex justify-content-end gap-3 list-unstyled mb-0">
-                            <li><a href="#" class="text-decoration-none text-black">Liên hệ</a></li>
-                            <li><a href="/Cart" class="text-decoration-none text-black">Giỏ hàng</a></li>
                         </ul>
                     </div>
                 </div>
@@ -48,7 +46,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-lg-4 fw-bold">
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Index">Trang chủ</a></li>
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/Products">Sản phẩm</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-page="/About">Giới thiệu</a></li>
                         <li class="nav-item">
                             <a class="nav-link"
                                href="#"
@@ -81,7 +79,6 @@
                 <div class="col-12 col-md-3">
                     <a class="navbar-brand d-flex align-items-center mb-2" asp-area="" asp-page="/Index">
                         <img src="~/img/logo.png" class="bt-logo me-2" />
-                        @* <span class="fw-semibold">BÁT TRÀNG HAMORY</span> *@
                     </a>
                     <p class="small text-muted mb-0">Gốm sứ thủ công Việt Nam, phong cách hiện đại, câu chuyện ấm áp.</p>
                 </div>
@@ -90,9 +87,7 @@
                     <ul class="list-unstyled small">
                         <li><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Index">Trang chủ</a></li>
                         <li><a class="link-secondary text-decoration-none" asp-area="" asp-page="/Products">Sản phẩm</a></li>
-                        <li><a class="link-secondary text-decoration-none" href="#about">Giới thiệu</a></li>
-                        @* <li><a class="link-secondary text-decoration-none" href="#support">Support</a></li> *@
-                        <!-- trước đây: <a class="nav-link" href="#support">Support</a> -->
+                        <li><a class="link-secondary text-decoration-none" asp-area="" asp-page="/About">Giới thiệu</a></li>
                         <a class="link-secondary text-decoration-none"
                            href="#"
                            data-bs-toggle="offcanvas"
@@ -149,35 +144,170 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="supportChat" aria-labelledby="supportChatLabel" style="width:380px;">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="supportChatLabel">Chat hỗ trợ AI</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <!-- Support Chat Offcanvas -->
+    <div class="offcanvas offcanvas-end support-canvas" tabindex="-1" id="supportChat" aria-labelledby="supportChatLabel" style="width:380px;">
+        <div class="offcanvas-header support-header">
+            <div class="d-flex align-items-center gap-2">
+                <div class="agent-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div>
+                    <div class="fw-bold">Trợ lý hỗ trợ</div>
+                    <div class="small opacity-75">Online • Phản hồi tức thì</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
         <div class="offcanvas-body d-flex flex-column gap-2">
-            <div id="chatMessages" class="flex-grow-1 overflow-auto border rounded p-2 small"
+            <div class="quick-ask no-select">
+                <button class="chip" data-text="Chính sách giao hàng">Giao hàng</button>
+                <button class="chip" data-text="Chính sách đổi trả">Đổi trả</button>
+                <button class="chip" data-text="Bảo hành thế nào?">Bảo hành</button>
+                <button class="chip" data-text="Mã giảm giá hiện có">Khuyến mãi</button>
+            </div>
+
+            <div id="chatMessages" class="flex-grow-1 overflow-auto border rounded p-2 small bg-light-subtle chat-area"
                  style="min-height:300px;max-height:60vh;">
                 <!-- messages appear here -->
             </div>
 
-            <form id="chatForm" class="d-flex gap-2">
-                <input id="chatInput" class="form-control" type="text" placeholder="Nhập câu hỏi..." autocomplete="off" />
-                <button class="btn btn-primary" type="submit">Gửi</button>
+            <form id="chatForm" class="d-flex gap-2 align-items-center">
+                <input id="chatInput" class="form-control" type="text" placeholder="Nhập câu hỏi... (ví dụ: giao hàng, đổi trả, bảo hành, mã giảm giá)" autocomplete="off" />
+                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
             </form>
 
-            <div class="text-muted small" id="typing" style="display:none;">AI đang trả lời…</div>
+            <div class="text-muted small d-flex align-items-center gap-2" id="typing" style="display:none;">
+                <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+                <span>Trợ lý đang trả lời…</span>
+            </div>
         </div>
     </div>
 
     <style>
+        .support-header{background:linear-gradient(135deg,#006b6a,#009688);color:#fff}
+        .support-canvas .offcanvas-header{border-bottom:1px solid rgba(255,255,255,.2)}
+        .agent-avatar{width:36px;height:36px;border-radius:50%;background:#fff;color:#006b6a;display:flex;align-items:center;justify-content:center}
+        .quick-ask{display:flex;gap:.5rem;flex-wrap:wrap}
+        .chip{border:none;background:#f1f3f5;color:#334155;padding:.35rem .6rem;border-radius:999px;font-weight:600;cursor:pointer}
+        .chip:hover{background:#e9ecef}
+
+        .chat-area{background:#f8f9fa}
         #chatMessages .msg{margin-bottom:.5rem}
         #chatMessages .msg.user{text-align:right}
-        #chatMessages .bubble{display:inline-block;padding:.5rem .75rem;border-radius:.75rem}
-        #chatMessages .user .bubble{background:#e9f5ff}
-        #chatMessages .ai .bubble{background:#f6f6f6}
+        #chatMessages .bubble{display:inline-block;padding:.5rem .75rem;border-radius:.75rem;max-width:80%;text-align:left}
+        #chatMessages .user .bubble{background:#e9f5ff;color:#0c4a6e}
+        #chatMessages .ai .bubble{background:#f6f6f6;color:#111827}
+        #chatMessages .meta{font-size:.7rem;color:#94a3b8;margin-top:.15rem}
+        .typing-dot{width:6px;height:6px;background:#9ca3af;border-radius:50%;display:inline-block;animation:blink 1.2s infinite ease-in-out}
+        .typing-dot:nth-child(2){animation-delay:.2s}
+        .typing-dot:nth-child(3){animation-delay:.4s}
+        @@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
     </style>
 
+    <script>
+        (function(){
+            const chatEl = document.getElementById('chatMessages');
+            const form = document.getElementById('chatForm');
+            const input = document.getElementById('chatInput');
+            const typing = document.getElementById('typing');
+            const storeKey = 'bt_support_chat_v1';
+            const history = []; // {role:'user'|'assistant', content:'...'}
+            let busy = false;
+
+            function setTyping(on){ if(!typing) return; typing.style.display = on ? 'flex' : 'none'; }
+
+            const canned = [
+                { k: ['giao hàng','ship','vận chuyển','delivery'], v: 'Giao hàng tiêu chuẩn 2-3 ngày, MIỄN PHÍ với đơn trên 500.000đ. Nội thành HN có giao nhanh 24h (30.000đ).' },
+                { k: ['đổi trả','đoi tra','return'], v: 'Đổi trả trong 7 ngày nếu sản phẩm lỗi/vỡ, giữ nguyên hộp và hoá đơn giúp shop xử lý nhanh nhé.' },
+                { k: ['bảo hành','bao hanh','warranty'], v: 'Bảo hành 12 tháng cho lỗi kỹ thuật/men. Liên hệ 0123 456 789 để được hỗ trợ.' },
+                { k: ['giảm giá','khuyến mãi','voucher','coupon','mã','promo'], v: 'Hiện có mã SAVE10 giảm 10% khi nhập tại giỏ hàng. Áp dụng cho đơn bất kỳ. Freeship đơn trên 500.000đ.' },
+                { k: ['thanh toán','payment'], v: 'Hỗ trợ COD khi nhận hàng hoặc thanh toán trực tiếp/chuyển khoản (ABC Bank - 123456789 - Cty Gốm Bát Tràng).' },
+                { k: ['liên hệ','hotline','điện thoại'], v: 'Hotline: 0123 456 789 • Email: info@battrang.vn • Địa chỉ: Làng nghề Bát Tràng, Gia Lâm, Hà Nội.' },
+                { k: ['giờ mở cửa','open','time'], v: 'Mở cửa 8:00 - 18:00 mỗi ngày. Bạn có thể ghé showroom để xem mẫu thực tế.' }
+            ];
+
+            function save(){ localStorage.setItem(storeKey, chatEl.innerHTML); }
+            function load(){ const h = localStorage.getItem(storeKey); if(h) chatEl.innerHTML = h; chatEl.scrollTop = chatEl.scrollHeight; }
+
+            function addMessage(role, text, record = true){
+                const wrap = document.createElement('div');
+                wrap.className = `msg ${role}`;
+                wrap.innerHTML = `<div class=\"bubble\">${escapeHtml(text)}</div><div class=\"meta\">${new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}</div>`;
+                chatEl.appendChild(wrap);
+                chatEl.scrollTop = chatEl.scrollHeight;
+                if(record){ history.push({ role: role === 'user' ? 'user' : 'assistant', content: text }); }
+                save();
+            }
+
+            function escapeHtml(s){ return s.replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c])); }
+
+            function findCanned(text){
+                const t = text.toLowerCase();
+                for(const c of canned){ if(c.k.some(k=>t.includes(k))) return c.v; }
+                return null;
+            }
+
+            async function askGpt(text){
+                const msgs = history.slice(-10);
+                msgs.push({ role: 'user', content: text });
+                const payload = {
+                    messages: msgs,
+                    instructions: 'Bạn là trợ lý hỗ trợ khách hàng Bát Tràng Hamory. Trả lời ngắn gọn, thân thiện, tiếng Việt. Nếu có mã khuyến mãi, ưu tiên nhắc SAVE10 giảm 10%.'
+                };
+                const resp = await fetch('/api/ai-chat', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                const data = await resp.json();
+                if(data.error){ throw new Error(data.error); }
+                return data.reply || '(Không có phản hồi phù hợp)';
+            }
+
+            async function botReply(text){
+                if(busy) return; busy = true; setTyping(true);
+                try{
+                    const cannedText = findCanned(text);
+                    let reply;
+                    if(cannedText){
+                        await new Promise(r=>setTimeout(r, 300));
+                        reply = cannedText;
+                    } else {
+                        reply = await askGpt(text);
+                    }
+                    addMessage('ai', reply);
+                } catch(err){
+                    addMessage('ai', 'Xin lỗi, hệ thống bận. Bạn vui lòng thử lại sau.');
+                    console.error('AI chat error:', err);
+                } finally { busy = false; setTyping(false); }
+            }
+
+            form?.addEventListener('submit', function(e){
+                e.preventDefault();
+                const val = (input.value||'').trim();
+                if(!val || busy) return;
+                addMessage('user', val);
+                input.value='';
+                botReply(val);
+            });
+
+            document.querySelectorAll('.chip[data-text]')?.forEach(btn=>{
+                btn.addEventListener('click', ()=>{
+                    const t = btn.getAttribute('data-text');
+                    if(!t || busy) return;
+                    addMessage('user', t);
+                    botReply(t);
+                });
+            });
+
+            const off = document.getElementById('supportChat');
+            off?.addEventListener('shown.bs.offcanvas', ()=>{
+                load(); setTyping(false);
+                if(!chatEl.innerHTML.trim()){
+                    addMessage('ai', 'Xin chào! Mình là trợ lý của Bát Tràng Hamory. Bạn muốn hỏi về giao hàng, đổi trả, bảo hành hay mã giảm giá SAVE10?', false);
+                }
+            });
+            off?.addEventListener('hide.bs.offcanvas', ()=>{ setTyping(false); });
+
+        })();
+    </script>
 
 </body>
 </html>

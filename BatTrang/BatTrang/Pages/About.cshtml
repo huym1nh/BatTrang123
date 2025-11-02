@@ -1,0 +1,96 @@
+﻿@page
+@model BatTrang.Pages.AboutModel
+@{
+    ViewData["Title"] = "Giới thiệu";
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - BatTrang</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap&subset=vietnamese" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<section class="about-hero">
+    <div class="container py-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold mb-3">Bát Tràng Hamory</h1>
+                <p class="lead text-muted">Tinh hoa gốm Việt – Kết hợp giữa thủ công truyền thống và thiết kế hiện đại.</p>
+                <div class="d-flex gap-3 mt-3">
+                    <div class="about-stat">
+                        <div class="num">15+</div>
+                        <div class="lbl">Năm kinh nghiệm</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="num">1.000+</div>
+                        <div class="lbl">Mẫu thiết kế</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="num">100%</div>
+                        <div class="lbl">Thủ công</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-image"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon"><i class="fas fa-brush"></i></div>
+                <h5>Thủ công tinh xảo</h5>
+                <p class="text-muted">Mỗi sản phẩm là kết tinh của đôi tay nghệ nhân làng gốm Bát Tràng.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon"><i class="fas fa-seedling"></i></div>
+                <h5>Vật liệu an toàn</h5>
+                <p class="text-muted">Sử dụng men gốm an toàn, thân thiện môi trường và sức khỏe.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="icon"><i class="fas fa-award"></i></div>
+                <h5>Chất lượng đảm bảo</h5>
+                <p class="text-muted">Quy trình kiểm định nghiêm ngặt trước khi đến tay khách hàng.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-6">
+            <div class="story-box p-4">
+                <h4 class="mb-3">Câu chuyện thương hiệu</h4>
+                <p class="text-muted mb-0">Bát Tràng Hamory ra đời với mong muốn đưa tinh hoa gốm Việt vào không gian sống hiện đại. Chúng tôi trân trọng nét đẹp truyền thống, kết hợp sáng tạo để tạo nên những sản phẩm gần gũi, tinh tế và bền vững.</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="story-box p-4">
+                <h4 class="mb-3">Sứ mệnh</h4>
+                <ul class="text-muted mb-0">
+                    <li>Tôn vinh văn hóa thủ công Bát Tràng.</li>
+                    <li>Tạo ra sản phẩm đẹp, an toàn, giá hợp lý.</li>
+                    <li>Lan tỏa cảm hứng sống tinh tế đến mọi nhà.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.about-hero{background:linear-gradient(135deg,#006b6a,#009688);color:#fff}
+.about-image{height:300px;border-radius:16px;background:url('/img/hero.jpg') center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.about-stat .num{font-size:2rem;font-weight:800}
+.about-stat .lbl{opacity:.85}
+.feature-box{background:#fff;border-radius:12px;padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.08);text-align:center}
+.feature-box .icon{font-size:1.5rem;color:#006b6a;margin-bottom:.5rem}
+.story-box{background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+</style>

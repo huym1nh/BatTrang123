@@ -5,84 +5,134 @@
 }
 @Html.AntiForgeryToken()
 
+<section class="checkout-hero">
+    <div class="container">
+        <h1 class="title">Thanh toán</h1>
+        <p class="subtitle">Hoàn tất thông tin để chúng tôi giao hàng nhanh chóng</p>
+        <div class="steps">
+            <div class="step done"><span class="num">1</span><span>Giỏ hàng</span></div>
+            <div class="bar"></div>
+            <div class="step current"><span class="num">2</span><span>Thanh toán</span></div>
+            <div class="bar"></div>
+            <div class="step"><span class="num">3</span><span>Hoàn tất</span></div>
+        </div>
+    </div>
+</section>
+
 <div class="container py-4">
-    <h2 class="mb-3">Thông tin thanh toán</h2>
     <form method="post">
-        <div class="row">
+        <div class="row g-4">
+            <!-- Left: Shipping and Payment -->
             <div class="col-lg-8">
-                <div class="card mb-3">
-                    <div class="card-header">Thông tin nhận hàng</div>
-                    <div class="card-body row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Họ tên</label>
-                            <input asp-for="Input.FullName" class="form-control" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Số điện thoại</label>
-                            <input asp-for="Input.Phone" class="form-control" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Email</label>
-                            <input asp-for="Input.Email" type="email" class="form-control" />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Địa chỉ</label>
-                            <input asp-for="Input.Address" class="form-control" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Phường/Xã</label>
-                            <input asp-for="Input.Ward" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Quận/Huyện</label>
-                            <input asp-for="Input.District" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Tỉnh/TP</label>
-                            <input asp-for="Input.Province" class="form-control" />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Ghi chú</label>
-                            <textarea asp-for="Input.Note" class="form-control"></textarea>
+                <div class="checkout-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-location-dot me-2"></i>Thông tin nhận hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Họ tên</label>
+                                <input asp-for="Input.FullName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Số điện thoại</label>
+                                <input asp-for="Input.Phone" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input asp-for="Input.Email" type="email" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Địa chỉ</label>
+                                <input asp-for="Input.Address" class="form-control" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Phường/Xã</label>
+                                <input asp-for="Input.Ward" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Quận/Huyện</label>
+                                <input asp-for="Input.District" class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tỉnh/TP</label>
+                                <input asp-for="Input.Province" class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Ghi chú</label>
+                                <textarea asp-for="Input.Note" rows="3" class="form-control" placeholder="Ví dụ: Giao trong giờ hành chính..."></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card mb-3">
-                    <div class="card-header">Phương thức thanh toán</div>
+                <div class="checkout-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-credit-card me-2"></i>Phương thức thanh toán</h5>
+                    </div>
                     <div class="card-body">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" asp-for="Input.PaymentMethod" value="COD" checked id="pmCOD" />
-                            <label class="form-check-label" for="pmCOD">Thanh toán khi nhận hàng (COD)</label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" asp-for="Input.PaymentMethod" value="DIRECT" id="pmDIRECT" />
-                            <label class="form-check-label" for="pmDIRECT">Thanh toán trực tiếp (tại cửa hàng hoặc chuyển khoản)</label>
+                        <div class="payment-options">
+                            <label class="payment-item">
+                                <input class="form-check-input" type="radio" asp-for="Input.PaymentMethod" value="COD" id="pmCOD" checked />
+                                <div class="payment-icon"><i class="fas fa-truck"></i></div>
+                                <div class="payment-text">
+                                    <div class="title">COD - Thanh toán khi nhận hàng</div>
+                                    <div class="sub">Thu tiền tận nơi, tiện lợi và an toàn</div>
+                                </div>
+                            </label>
+                            <label class="payment-item">
+                                <input class="form-check-input" type="radio" asp-for="Input.PaymentMethod" value="DIRECT" id="pmDIRECT" />
+                                <div class="payment-icon"><i class="fas fa-building-columns"></i></div>
+                                <div class="payment-text">
+                                    <div class="title">Trực tiếp/Chuyển khoản</div>
+                                    <div class="sub">Thanh toán tại cửa hàng hoặc chuyển khoản ngân hàng</div>
+                                </div>
+                            </label>
                         </div>
 
-                        <div id="directInfo" class="alert alert-info mt-3 d-none">
-                            <h6 class="mb-2">Hướng dẫn thanh toán trực tiếp</h6>
-                            <ul class="mb-2">
-                                <li>Trả tiền tại cửa hàng khi đến nhận.</li>
-                                <li>Hoặc chuyển khoản: <strong>Ngân hàng ABC - STK 123456789 - Chủ TK: Công ty Gốm Bát Tràng</strong>.</li>
-                            </ul>
-                            <small>Sau khi chuyển khoản, vui lòng giữ lại chứng từ. Đơn sẽ được xác nhận khi shop kiểm tra xong.</small>
+                        <div id="directInfo" class="alert alert-info d-none mt-3">
+                            <div class="d-flex align-items-start gap-2">
+                                <div class="text-primary"><i class="fas fa-circle-info"></i></div>
+                                <div>
+                                    <h6 class="mb-1">Hướng dẫn thanh toán trực tiếp</h6>
+                                    <ul class="mb-2">
+                                        <li>Trả tiền tại cửa hàng khi đến nhận.</li>
+                                        <li>Hoặc chuyển khoản: <strong>Ngân hàng ABC - STK 123456789 - Chủ TK: Công ty Gốm Bát Tràng</strong>.</li>
+                                    </ul>
+                                    <small>Sau khi chuyển khoản, vui lòng giữ lại chứng từ. Đơn sẽ được xác nhận khi shop kiểm tra xong.</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Right: Order Summary -->
             <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">Đơn hàng</div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between"><span>Tạm tính</span><strong>@Model.Summary.Subtotal.ToString("C0")</strong></div>
-                        <div class="d-flex justify-content-between"><span>Phí vận chuyển</span><strong>@Model.Summary.ShippingFee.ToString("C0")</strong></div>
-                        <div class="d-flex justify-content-between mb-2"><span>Giảm giá</span><strong>-@Model.Summary.Discount.ToString("C0")</strong></div>
-                        <hr />
-                        <div class="d-flex justify-content-between"><span>Tổng cộng</span><strong class="text-success">@Model.Summary.Total.ToString("C0")</strong></div>
-                        <button type="submit" class="btn btn-success w-100 mt-3">Đặt hàng</button>
+                <div class="summary-card">
+                    <h5 class="mb-3">Đơn hàng</h5>
+                    <div class="row-line"><span>Tạm tính</span><strong>@Model.Summary.Subtotal.ToString("C0")</strong></div>
+                    <div class="row-line"><span>Phí vận chuyển</span><strong>@Model.Summary.ShippingFee.ToString("C0")</strong></div>
+                    <div class="row-line"><span>Giảm giá</span><strong>-@Model.Summary.Discount.ToString("C0")</strong></div>
+                    <hr />
+                    <div class="row-line total"><span>Tổng cộng</span><strong class="text-success">@Model.Summary.Total.ToString("C0")</strong></div>
+
+                    <button type="submit" class="btn btn-success w-100 mt-3 py-2">
+                        <i class="fas fa-check me-2"></i>Đặt hàng
+                    </button>
+
+                    <div class="secure-note mt-3">
+                        <i class="fas fa-shield-alt me-2"></i>Thanh toán an toàn • Dữ liệu được mã hóa
                     </div>
+                </div>
+
+                <div class="tips-card mt-3">
+                    <div class="tips-title"><i class="fas fa-gift me-2"></i>Mẹo nhỏ</div>
+                    <ul class="small text-muted mb-0 ps-3">
+                        <li>Đơn hàng trên 500.000đ được miễn phí vận chuyển.</li>
+                        <li>Kiểm tra lại số điện thoại để shipper liên hệ nhanh.</li>
+                        <li>Đổi trả trong 7 ngày nếu sản phẩm lỗi/vỡ.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -100,3 +150,39 @@
         toggleDirectInfo();
     </script>
 }
+
+<style>
+.checkout-hero{background:linear-gradient(135deg,#006b6a,#009688);color:#fff;padding:2.5rem 0 2rem;margin-bottom:1rem}
+.checkout-hero .title{font-weight:800}
+.checkout-hero .subtitle{opacity:.95}
+.steps{display:flex;align-items:center;gap:.75rem;margin-top:1rem}
+.steps .bar{flex:1;height:3px;background:rgba(255,255,255,.35)}
+.step{display:flex;align-items:center;gap:.5rem;color:#e6fffb}
+.step .num{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.25);font-weight:700}
+.step.current .num,.step.done .num{background:#fff;color:#006b6a}
+
+.checkout-card{background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:1rem}
+.checkout-card .card-header{padding:1rem 1.25rem;border-bottom:1px solid #eef2f3}
+.checkout-card .card-header h5{margin:0;font-weight:800;color:#0f5132}
+.checkout-card .card-body{padding:1.25rem}
+
+.payment-options{display:flex;flex-direction:column;gap:.75rem}
+.payment-item{display:flex;gap:.75rem;align-items:center;padding:.75rem 1rem;border:2px solid #eef2f3;border-radius:12px;cursor:pointer}
+.payment-item:hover{border-color:#009688}
+.payment-item .payment-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#006b6a,#009688);color:#fff;display:flex;align-items:center;justify-content:center}
+.payment-item .title{font-weight:700}
+.payment-item .sub{font-size:.9rem;color:#6c757d}
+.payment-item input{margin-right:.25rem}
+
+.summary-card{background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:1.25rem}
+.row-line{display:flex;justify-content:space-between;align-items:center;margin:.35rem 0}
+.row-line.total{font-size:1.1rem;font-weight:800}
+.secure-note{font-size:.9rem;color:#6c757d;text-align:center}
+
+.tips-card{background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:1rem}
+.tips-title{font-weight:700;color:#006b6a;margin-bottom:.5rem}
+
+@@media (max-width: 768px){
+    .steps{flex-wrap:wrap}
+}
+</style>

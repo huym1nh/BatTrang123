@@ -1,132 +1,616 @@
 @page
 @model BatTrang.Pages.ProductsModel
 @{
-    ViewData["Title"] = "All Products";
+    ViewData["Title"] = "Sản phẩm";
 }
 
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="fw-bold text-center mb-3">Tất Cả Sản Phẩm</h1>
-            <p class="text-muted text-center">Khám phá bộ sưu tập đầy đủ các sản phẩm gốm sứ Bát Tràng</p>
+<!-- Hero Section -->
+<section class="products-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title mb-3">Khám Phá Bộ Sưu Tập</h1>
+                <p class="hero-subtitle mb-4">Sản phẩm gốm sứ thủ công Bát Tràng, nơi truyền thống gặp gỡ hiện đại</p>
+                <div class="hero-stats d-flex gap-4">
+                    <div class="stat-item">
+                        <div class="stat-number">@Model.CategoryProductCounts.Values.Sum()</div>
+                        <div class="stat-label">Sản phẩm</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">@Model.Categories.Count</div>
+                        <div class="stat-label">Danh mục</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Thủ công</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-image-container">
+                    <img src="/img/hero.jpg" alt="Pottery" class="hero-image" />
+                    <div class="hero-decoration"></div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
+<div class="container py-5">
     <div class="row">
         <!-- Sidebar Categories -->
         <div class="col-12 col-lg-3 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Danh Mục</h5>
+            <!-- Search Box -->
+            <div class="card filter-card mb-3">
+                <div class="card-body">
+                    <h6 class="filter-title mb-3"><i class="fas fa-search me-2"></i>Tìm kiếm</h6>
+                    <form method="get" id="searchForm">
+                        <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                        <input type="hidden" name="sortBy" value="@Model.SortBy" />
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search" 
+                                   placeholder="Tìm sản phẩm..." value="@Model.Search" />
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush bt-category-filter">
-                        <a href="/Products" class="list-group-item list-group-item-action @(Model.CategoryId == null ? "active" : "")">
-                            <i class="fas fa-th-large me-2"></i>Tất Cả Sản Phẩm
-                            <span class="badge bg-secondary float-end">@Model.CategoryProductCounts.Values.Sum()</span>
+            </div>
+
+            <!-- Categories -->
+            <div class="card filter-card">
+                <div class="card-body">
+                    <h6 class="filter-title mb-3"><i class="fas fa-filter me-2"></i>Danh Mục</h6>
+                    <div class="category-list">
+                        <a href="/Products?sortBy=@Model.SortBy&search=@Model.Search" 
+                           class="category-item @(Model.CategoryId == null ? "active" : "")">
+                            <span class="category-name">
+                                <i class="fas fa-th-large me-2"></i>Tất Cả
+                            </span>
+                            <span class="category-count">@Model.CategoryProductCounts.Values.Sum()</span>
                         </a>
                         @foreach (var category in Model.Categories)
                         {
                             var productCount = Model.CategoryProductCounts.ContainsKey(category.Id) ? Model.CategoryProductCounts[category.Id] : 0;
-                            <a href="/Products?categoryId=@category.Id" 
-                               class="list-group-item list-group-item-action @(Model.CategoryId == category.Id ? "active" : "")">
-                                <i class="fas fa-tag me-2"></i>@category.Name
-                                <span class="badge bg-secondary float-end">@productCount</span>
+                            <a href="/Products?categoryId=@category.Id&sortBy=@Model.SortBy&search=@Model.Search" 
+                               class="category-item @(Model.CategoryId == category.Id ? "active" : "")">
+                                <span class="category-name">
+                                    <i class="fas fa-tag me-2"></i>@category.Name
+                                </span>
+                                <span class="category-count">@productCount</span>
                             </a>
                         }
                     </div>
                 </div>
             </div>
+
+            <!-- Price Range Info -->
+            @if (Model.Products.Any())
+            {
+                var minPrice = Model.Products.Min(p => p.Price);
+                var maxPrice = Model.Products.Max(p => p.Price);
+                <div class="card filter-card mt-3">
+                    <div class="card-body">
+                        <h6 class="filter-title mb-3"><i class="fas fa-dollar-sign me-2"></i>Khoảng giá</h6>
+                        <div class="price-range-info">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Thấp nhất:</span>
+                                <span class="fw-bold text-success">@minPrice.ToString("C0")</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted small">Cao nhất:</span>
+                                <span class="fw-bold text-success">@maxPrice.ToString("C0")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- Main Content -->
         <div class="col-12 col-lg-9">
+            <!-- Toolbar -->
+            <div class="products-toolbar mb-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="toolbar-info">
+                        <h5 class="mb-1">
+                            @if (Model.CategoryId.HasValue)
+                            {
+                                var selectedCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.CategoryId);
+                                <span>@selectedCategory?.Name</span>
+                            }
+                            else
+                            {
+                                <span>Tất Cả Sản Phẩm</span>
+                            }
+                        </h5>
+                        <p class="text-muted mb-0 small">
+                            Hiển thị <strong>@Model.Products.Count</strong> sản phẩm
+                            @if (!string.IsNullOrWhiteSpace(Model.Search))
+                            {
+                                <span> cho "<strong>@Model.Search</strong>"</span>
+                            }
+                        </p>
+                    </div>
+
+                    <div class="toolbar-actions d-flex gap-2">
+                        <form method="get" class="d-flex gap-2" id="sortForm">
+                            <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                            <input type="hidden" name="search" value="@Model.Search" />
+                            <select name="sortBy" class="form-select form-select-sm" onchange="this.form.submit()">
+                                <option value="" selected="@(string.IsNullOrEmpty(Model.SortBy))">Mới nhất</option>
+                                <option value="price-asc" selected="@(Model.SortBy == "price-asc")">Giá: Thấp → Cao</option>
+                                <option value="price-desc" selected="@(Model.SortBy == "price-desc")">Giá: Cao → Thấp</option>
+                                <option value="name-asc" selected="@(Model.SortBy == "name-asc")">Tên: A → Z</option>
+                                <option value="name-desc" selected="@(Model.SortBy == "name-desc")">Tên: Z → A</option>
+                            </select>
+                        </form>
+                        
+                        @if (Model.CategoryId.HasValue || !string.IsNullOrWhiteSpace(Model.Search))
+                        {
+                            <a href="/Products" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i>Xóa bộ lọc
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+
             @if (Model.Products.Any())
             {
-                <div class="row g-4 bt-product-grid">
+                <div class="row g-4 product-grid">
                     @foreach (var product in Model.Products)
                     {
-                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="card h-100 bt-card shadow-sm">
-                                <div class="ratio ratio-4x3 rounded-top overflow-hidden">
-                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
-                                    {
-                                        <img src="@product.ImageUrl" class="w-100 h-100 object-fit-cover" alt="@product.Name" />
-                                    }
-                                    else
-                                    {
-                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
-                                            <i class="fas fa-image fa-2x text-muted"></i>
-                                        </div>
-                                    }
+                        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                            <div class="product-card">
+                                <div class="product-image-wrapper">
+                                    <a href="/ProductDetail/@product.Id">
+                                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                        {
+                                            <img src="@product.ImageUrl" class="product-image" alt="@product.Name" />
+                                        }
+                                        else
+                                        {
+                                            <div class="product-image-placeholder">
+                                                <i class="fas fa-image fa-2x text-muted"></i>
+                                            </div>
+                                        }
+                                    </a>
+                                    <div class="product-badges">
+                                        @if (product.Price < 100000)
+                                        {
+                                            <span class="product-badge badge-sale">Giá tốt</span>
+                                        }
+                                    </div>
+                                    <div class="product-overlay">
+                                        <a href="/ProductDetail/@product.Id" class="btn btn-light btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Xem chi tiết
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h6 class="card-title mb-2">@product.Name</h6>
-                                    <div class="small text-muted mb-2">
+                                <div class="product-card-body">
+                                    <div class="product-category">
                                         <i class="fas fa-tag me-1"></i>@product.Category?.Name
                                     </div>
+                                    <h6 class="product-title">
+                                        <a href="/ProductDetail/@product.Id">@product.Name</a>
+                                    </h6>
                                     @if (!string.IsNullOrEmpty(product.Description))
                                     {
-                                        <p class="card-text small text-muted mb-3">@product.Description</p>
+                                        <p class="product-description">@product.Description</p>
                                     }
-                                    <div class="mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="h5 text-success mb-0">@product.Price.ToString("C0")</span>
-                                            <a href="/ProductDetail/@product.Id" class="btn btn-outline-primary btn-sm">Chi tiết</a>
-                                        </div>
+                                    <div class="product-footer">
+                                        <div class="product-price">@product.Price.ToString("C0")</div>
+                                        <a href="/ProductDetail/@product.Id" class="btn-add-cart">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     }
                 </div>
-
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted mb-0">
-                                @if (Model.CategoryId.HasValue)
-                                {
-                                    var selectedCategory = Model.Categories.FirstOrDefault(c => c.Id == Model.CategoryId);
-                                    <span>Hiển thị @Model.Products.Count sản phẩm trong danh mục "<strong>@selectedCategory?.Name</strong>"</span>
-                                }
-                                else
-                                {
-                                    <span>Hiển thị @Model.Products.Count sản phẩm</span>
-                                }
-                            </p>
-                            @if (Model.CategoryId.HasValue)
-                            {
-                                <a href="/Products" class="btn btn-outline-secondary btn-sm">
-                                    <i class="fas fa-times me-1"></i>Xóa bộ lọc
-                                </a>
-                            }
-                        </div>
-                    </div>
-                </div>
             }
             else
             {
-                <div class="row">
-                    <div class="col-12 text-center py-5">
-                        <div class="mb-4">
-                            <i class="fas fa-box-open fa-3x text-muted"></i>
-                        </div>
-                        <h4 class="text-muted">Chưa có sản phẩm nào</h4>
-                        <p class="text-muted">
-                            @if (Model.CategoryId.HasValue)
-                            {
-                                <span>Không có sản phẩm nào trong danh mục này.</span>
-                            }
-                            else
-                            {
-                                <span>Các sản phẩm sẽ được cập nhật sớm nhất.</span>
-                            }
-                        </p>
-                        <a href="/" class="btn btn-outline-primary">Về trang chủ</a>
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-box-open"></i>
                     </div>
+                    <h4>Không tìm thấy sản phẩm</h4>
+                    <p class="text-muted">
+                        @if (!string.IsNullOrWhiteSpace(Model.Search))
+                        {
+                            <span>Không có sản phẩm nào phù hợp với từ khóa "<strong>@Model.Search</strong>".</span>
+                        }
+                        else if (Model.CategoryId.HasValue)
+                        {
+                            <span>Không có sản phẩm nào trong danh mục này.</span>
+                        }
+                        else
+                        {
+                            <span>Hiện tại chưa có sản phẩm nào.</span>
+                        }
+                    </p>
+                    <a href="/Products" class="btn btn-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Xem tất cả sản phẩm
+                    </a>
                 </div>
             }
         </div>
     </div>
 </div>
+
+<style>
+/* Hero Section */
+.products-hero {
+    background: linear-gradient(135deg, #006b6a 0%, #009688 100%);
+    color: white;
+    padding: 4rem 0 3rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.products-hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.95;
+}
+
+.hero-stats {
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: left;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 450px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.hero-decoration {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+/* Filter Cards */
+.filter-card {
+    border: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 12px;
+}
+
+.filter-title {
+    font-weight: 700;
+    color: #006b6a;
+    margin-bottom: 1rem;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.2s;
+    background: #f8f9fa;
+}
+
+.category-item:hover {
+    background: #e9ecef;
+    color: #006b6a;
+    transform: translateX(5px);
+}
+
+.category-item.active {
+    background: linear-gradient(135deg, #006b6a, #009688);
+    color: white;
+    font-weight: 600;
+}
+
+.category-name {
+    display: flex;
+    align-items: center;
+}
+
+.category-count {
+    background: rgba(0,0,0,0.1);
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.category-item.active .category-count {
+    background: rgba(255,255,255,0.25);
+}
+
+/* Toolbar */
+.products-toolbar {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+/* Product Grid */
+.product-grid {
+    margin-bottom: 2rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.product-image-wrapper {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.1);
+}
+
+.product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.product-badges {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.product-badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-sale {
+    background: #dc3545;
+    color: white;
+}
+
+.product-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,107,106,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.product-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-category {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.product-title a {
+    color: #212529;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.product-title a:hover {
+    color: #006b6a;
+}
+
+.product-description {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #198754;
+}
+
+.btn-add-cart {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #006b6a;
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn-add-cart:hover {
+    background: #009688;
+    transform: scale(1.1);
+    color: white;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.empty-icon {
+    font-size: 5rem;
+    color: #dee2e6;
+    margin-bottom: 2rem;
+}
+
+.empty-state h4 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .products-hero {
+        padding: 3rem 0 2rem;
+    }
+    
+    .hero-stats {
+        margin-top: 1.5rem;
+    }
+}
+
+@@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .products-toolbar {
+        padding: 1rem;
+    }
+    
+    .toolbar-actions {
+        width: 100%;
+    }
+    
+    .toolbar-actions select {
+        flex: 1;
+    }
+}
+</style>

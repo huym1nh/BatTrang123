@@ -21,10 +21,14 @@ namespace BatTrang.Pages
         [BindProperty(SupportsGet = true)]
         public long? CategoryId { get; set; }
 
-        public async Task OnGetAsync(long? categoryId = null)
+        [BindProperty(SupportsGet = true)]
+        public string? SortBy { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? Search { get; set; }
+
+        public async Task OnGetAsync()
         {
-            CategoryId = categoryId;
-            
             // Lấy danh sách categories
             Categories = await _db.Categories
                 .AsNoTracking()
@@ -45,14 +49,33 @@ namespace BatTrang.Pages
                 .Include(p => p.Category)
                 .AsNoTracking();
 
-            if (categoryId.HasValue && categoryId > 0)
+            // Filter by category
+            if (CategoryId.HasValue && CategoryId > 0)
             {
-                query = query.Where(p => p.CategoryId == categoryId);
+                query = query.Where(p => p.CategoryId == CategoryId);
             }
 
-            Products = await query
-                .OrderByDescending(p => p.Id)
-                .ToListAsync();
+            // Filter by search
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                var searchLower = Search.ToLower();
+                query = query.Where(p => 
+                    p.Name.ToLower().Contains(searchLower) ||
+                    (p.Description != null && p.Description.ToLower().Contains(searchLower))
+                );
+            }
+
+            // Apply sorting
+            query = SortBy switch
+            {
+                "price-asc" => query.OrderBy(p => p.Price),
+                "price-desc" => query.OrderByDescending(p => p.Price),
+                "name-asc" => query.OrderBy(p => p.Name),
+                "name-desc" => query.OrderByDescending(p => p.Name),
+                _ => query.OrderByDescending(p => p.Id) // newest first (default)
+            };
+
+            Products = await query.ToListAsync();
         }
     }
 }

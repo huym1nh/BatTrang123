@@ -12,7 +12,7 @@
             <div class="col-lg-5 plantify-hero-left">
                 <div class="hero-content-wrapper">
                     <h1 class="hero-main-title">Tinh hoa nở rộ từ bên trong</h1>
-                    <p class="hero-subtitle">Môi trường chúng ta sống và làm việc phản ánh thái độ và kỳ vọng của chúng ta. Mỗi sản phẩm gốm Bát Tràng mang đến sự hài hòa và vẻ đẹp cho không gian của bạn.</p>
+                    <p class="hero-subtitle text-contrast">Môi trường chúng ta sống và làm việc phản ánh thái độ và kỳ vọng của chúng ta. Mỗi sản phẩm gốm Bát Tràng mang đến sự hài hòa và vẻ đẹp cho không gian của bạn.</p>
                     
                     <div class="hero-buttons mt-4">
                         <a href="/Products" class="btn-hero-primary">Mua ngay</a>
@@ -57,6 +57,46 @@
             <!-- Right Column: Content Section -->
             <div class="col-lg-7 plantify-content-right">
                 <div class="content-wrapper">
+                    <!-- Promo Carousel -->
+                    <div id="homeCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div>
+                        <div class="carousel-inner rounded-3 shadow-sm">
+                            <div class="carousel-item active">
+                                <img src="/img/hero.jpg" class="d-block w-100 object-fit-cover" style="height:320px" alt="Ưu đãi mùa xuân">
+                                <div class="carousel-caption d-none d-md-block text-start caption-contrast">
+                                    <h5>Ưu đãi mùa xuân</h5>
+                                    <p>Giảm đến 30% cho bộ sưu tập mới.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/img/banner2.jpg" class="d-block w-100 object-fit-cover" style="height:320px" alt="Bộ sưu tập trang trí">
+                                <div class="carousel-caption d-none d-md-block text-start caption-contrast">
+                                    <h5>Bộ sưu tập trang trí</h5>
+                                    <p>Thêm cảm hứng cho không gian sống của bạn.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/img/banner3.jpg" class="d-block w-100 object-fit-cover" style="height:320px" alt="Sản phẩm thủ công">
+                                <div class="carousel-caption d-none d-md-block text-start caption-contrast">
+                                    <h5>Sản phẩm thủ công</h5>
+                                    <p>Mỗi chiếc là một câu chuyện.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
                     <!-- Colorful New Arrivals -->
                     <div class="content-section">
                         <div class="section-header">
@@ -74,6 +114,53 @@
                                     </div>
                                 </div>
                             }
+                        </div>
+                    </div>
+
+                    <!-- Best Sellers -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Bán Chạy Nhất</h2>
+                            <a href="/Products" class="view-all-link">xem tất cả</a>
+                        </div>
+                        <div class="product-grid-stands">
+                            @foreach (var p in Model.BestSellers.Take(4))
+                            {
+                                <div class="product-item-square">
+                                    <img src="@p.ImageUrl" alt="@p.Name" />
+                                    <div class="product-info">
+                                        <p class="product-name">@p.Name</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-success fw-bold">@p.Price.ToString("C0")</span>
+                                            <a href="/ProductDetail/@p.Id" class="info-link">mua ngay →</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Discount Suggestion Banners -->
+                    <div class="content-section">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <a href="/Products" class="promo-tile d-block text-decoration-none">
+                                    <div class="promo-content">
+                                        <div class="promo-eyebrow">GỢI Ý HÔM NAY</div>
+                                        <div class="promo-title">Mua 2 giảm 15%</div>
+                                        <div class="promo-sub">Áp dụng cho ly cốc & chén tách</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/Products" class="promo-tile alt d-block text-decoration-none">
+                                    <div class="promo-content">
+                                        <div class="promo-eyebrow">DEAL HOT</div>
+                                        <div class="promo-title">Combo quà tặng</div>
+                                        <div class="promo-sub">Tiết kiệm đến 200.000đ</div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -149,7 +236,7 @@
                             <div class="color-dot" style="background: #DC3545;"></div>
                             <div class="color-dot" style="background: #0D6EFD;"></div>
                         </div>
-                        <button class="btn-buy">Mua</button>
+                        <a href="/ProductDetail/@p.Id" class="btn-buy d-inline-block text-center text-decoration-none">Mua</a>
                     </div>
                 </div>
             }
@@ -158,426 +245,165 @@
 </section>
 
 <style>
-/* Plantify Style Variables */
-:root {
-    --teal-primary: #006b6a;
-    --teal-light: #009688;
-    --pink-light: #fff1f1;
-    --gray-text: #8f8f8f;
-}
+:root { --teal-primary: #006b6a; --teal-light: #009688; --pink-light: #fff1f1; --gray-text: #8f8f8f; }
+
+/* Contrast helpers */
+.text-contrast { color: #ffffff; }
+.caption-contrast { color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.45); }
+
+/******************** Promo tiles ********************/
+.promo-tile { position: relative; border-radius: 12px; background: linear-gradient(135deg,#f5fbff,#eefcf5); padding: 24px; overflow: hidden; border:1px solid #e9ecef; }
+.promo-tile.alt { background: linear-gradient(135deg,#fff7f7,#fffdf0); }
+.promo-content { position: relative; z-index: 2; color:#1f2937; }
+.promo-eyebrow { font-size: .75rem; letter-spacing: .08em; font-weight: 700; color:#0d6efd; }
+.promo-title { font-size: 1.4rem; font-weight: 800; margin: .1rem 0 .25rem; color:#0b7285; }
+.promo-sub { font-size: .9rem; color:#6c757d; }
+.promo-tile::after { content: ""; position: absolute; right:-30px; bottom:-30px; width: 160px; height:160px; background: radial-gradient( rgba(13,110,253,.15) 0, rgba(13,110,253,0) 70% ); }
+.promo-tile.alt::after { background: radial-gradient( rgba(255,193,7,.2) 0, rgba(255,193,7,0) 70% ); }
 
 /* Remove default spacing */
-.plantify-hero-layout .container-fluid {
-    padding: 0;
-}
+.plantify-hero-layout .container-fluid { padding: 0; }
 
 /* Left Hero Column */
-.plantify-hero-left {
-    background: linear-gradient(135deg, var(--teal-primary) 0%, var(--teal-light) 100%);
-    color: white;
-    padding: 4rem 3rem;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
+.plantify-hero-left { background: linear-gradient(135deg, var(--teal-primary) 0%, var(--teal-light) 100%); color: white; padding: 4rem 3rem; min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
 
-.hero-content-wrapper {
-    position: relative;
-    z-index: 2;
-    max-width: 500px;
-}
+.hero-content-wrapper { position: relative; z-index: 2; max-width: 500px; }
 
-.hero-main-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
+.hero-main-title { font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }
 
-.hero-subtitle {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    opacity: 0.95;
-    margin-bottom: 2rem;
-}
+.hero-subtitle { font-size: 1.1rem; line-height: 1.8; opacity: 0.95; margin-bottom: 2rem; }
 
-.hero-buttons {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
+.hero-buttons { display: flex; align-items: center; gap: 2rem; }
 
-.btn-hero-primary {
-    background: white;
-    color: var(--teal-primary);
-    padding: 1rem 3rem;
-    font-weight: 600;
-    border-radius: 0;
-    transition: all 0.3s;
-}
+.btn-hero-primary { background: white; color: var(--teal-primary); padding: 1rem 3rem; font-weight: 600; border-radius: 0; transition: all 0.3s; }
 
-.btn-hero-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    color: var(--teal-primary);
-}
+.btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: var(--teal-primary); }
 
-.btn-hero-secondary {
-    color: white;
-    font-weight: 500;
-    text-decoration: none;
-}
+.btn-hero-secondary { color: white; font-weight: 500; text-decoration: none; }
 
-.btn-hero-secondary:hover {
-    color: white;
-    opacity: 0.8;
-}
+.btn-hero-secondary:hover { color: white; opacity: 0.8; }
 
 /* Featured Products Mini Grid in Hero */
-.hero-featured-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    max-width: 450px;
-}
+.hero-featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 450px; }
 
-.mini-product-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    aspect-ratio: 1;
-    overflow: hidden;
-    position: relative;
-}
+.mini-product-card { background: white; border-radius: 8px; padding: 1rem; aspect-ratio: 1; overflow: hidden; position: relative; }
 
-.mini-product-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
+.mini-product-card img { width: 100%; height: 100%; object-fit: contain; }
 
-.mini-product-card-large {
-    grid-column: 1 / -1;
-    background: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    position: relative;
-}
+.mini-product-card-large { grid-column: 1 / -1; background: white; border-radius: 8px; padding: 1.5rem; position: relative; }
 
-.mini-product-card-large img {
-    width: 100%;
-    height: 200px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-}
+.mini-product-card-large img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 1rem; }
 
-.product-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: var(--teal-primary);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 3;
-}
+.product-badge { position: absolute; top: 10px; left: 10px; background: var(--teal-primary); color: white; padding: 0.25rem 0.75rem; font-size: 0.75rem; font-weight: 600; z-index: 3; }
 
-.product-info h5 {
-    color: var(--teal-primary);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
+.product-info h5 { color: var(--teal-primary); font-weight: 600; margin-bottom: 0.5rem; }
 
-.product-info p {
-    color: var(--gray-text);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
+.product-info p { color: var(--gray-text); font-size: 0.9rem; margin-bottom: 1rem; }
 
-.read-more {
-    color: var(--teal-primary);
-    text-decoration: none;
-    font-weight: 600;
-}
+.read-more { color: var(--teal-primary); text-decoration: none; font-weight: 600; }
 
 /* Decorative Dots */
-.decorative-dots {
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    width: 150px;
-    height: 100px;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 2px, transparent 2px);
-    background-size: 30px 30px;
-    opacity: 0.3;
-}
+.decorative-dots { position: absolute; bottom: 50px; left: 50px; width: 150px; height: 100px; background-image: radial-gradient(circle, rgba(255,255,255,0.3) 2px, transparent 2px); background-size: 30px 30px; opacity: 0.3; }
 
 /* Right Content Column */
-.plantify-content-right {
-    background: white;
-    padding: 3rem;
-}
+.plantify-content-right { background: white; padding: 3rem; }
 
-.content-wrapper {
-    max-width: 900px;
-}
+.content-wrapper { max-width: 900px; }
 
-.content-section {
-    margin-bottom: 4rem;
-}
+.content-section { margin-bottom: 4rem; }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 
-.section-title {
-    color: var(--teal-primary);
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-}
+.section-title { color: var(--teal-primary); font-size: 1.5rem; font-weight: 700; margin: 0; }
 
-.view-all-link {
-    color: var(--teal-primary);
-    text-decoration: none;
-    font-weight: 500;
-    text-transform: lowercase;
-}
+.view-all-link { color: var(--teal-primary); text-decoration: none; font-weight: 500; text-transform: lowercase; }
 
-.view-all-link:hover {
-    color: var(--teal-light);
-}
+.view-all-link:hover { color: var(--teal-light); }
 
 /* Product Grids */
 .product-grid-new,
-.product-grid-stands {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-}
+.product-grid-stands { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
 
-.product-item-square {
-    aspect-ratio: 1;
-    overflow: hidden;
-    position: relative;
-}
+.product-item-square { aspect-ratio: 1; overflow: hidden; position: relative; border: 1px solid #f1f3f5; border-radius: 10px; background: #fff; }
 
-.product-item-square img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
+.product-item-square img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
 
-.product-item-square:hover img {
-    transform: scale(1.05);
-}
+.product-item-square:hover img { transform: scale(1.05); }
 
-.product-info {
-    padding-top: 1rem;
-}
+.product-info { padding: 1rem; }
 
-.product-name {
-    color: var(--teal-primary);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
+.product-name { color: var(--teal-primary); font-weight: 600; margin-bottom: 0.25rem; }
 
-.info-link {
-    color: var(--gray-text);
-    font-size: 0.85rem;
-    text-decoration: none;
-}
+.info-link { color: var(--gray-text); font-size: 0.85rem; text-decoration: none; }
 
 /* Service Section */
-.section-subtitle {
-    color: var(--gray-text);
-    margin-bottom: 1.5rem;
-}
+.section-subtitle { color: var(--gray-text); margin-bottom: 1.5rem; }
 
-.service-info {
-    margin-bottom: 2rem;
-}
+.service-info { margin-bottom: 2rem; }
 
-.service-info p {
-    margin-bottom: 0.5rem;
-    color: var(--gray-text);
-}
+.service-info p { margin-bottom: 0.5rem; color: var(--gray-text); }
 
-.bg-service-image {
-    background: var(--pink-light);
-    height: 200px;
-    border-radius: 12px;
-    position: relative;
-    overflow: hidden;
-}
+.bg-service-image { background: var(--pink-light); height: 200px; border-radius: 12px; position: relative; overflow: hidden; }
 
-.decorative-jars {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 80%;
-    background-image: url('/img/hero.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.3;
-}
+.decorative-jars { position: absolute; bottom: 0; width: 100%; height: 80%; background-image: url('/img/hero.jpg'); background-size: cover; background-position: center; opacity: 0.3; }
 
 /* Visit Us Section */
-.visit-info .address {
-    margin-bottom: 0.5rem;
-    color: var(--gray-text);
-}
+.visit-info .address { margin-bottom: 0.5rem; color: var(--gray-text); }
 
-.hours {
-    color: var(--gray-text);
-    margin-top: 1rem;
-}
+.hours { color: var(--gray-text); margin-top: 1rem; }
 
-.btn-get-directions {
-    background: var(--teal-primary);
-    color: white;
-    border: none;
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    cursor: pointer;
-}
+.btn-get-directions { background: var(--teal-primary); color: white; border: none; padding: 0.75rem 2rem; font-weight: 600; margin-top: 1.5rem; cursor: pointer; }
 
 /* Featured Products Horizontal Section */
-.featured-section-horizontal {
-    padding: 4rem 0;
-    background: #f8f9fa;
-}
+.featured-section-horizontal { padding: 4rem 0; background: #f8f9fa; }
 
-.featured-products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 2rem 0;
-}
+.featured-products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; padding: 2rem 0; }
 
-.featured-product-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+.featured-product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s; }
 
-.featured-product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
+.featured-product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
 
-.featured-product-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
+.featured-product-card img { width: 100%; height: 250px; object-fit: cover; }
 
-.card-content {
-    padding: 1.5rem;
-}
+.card-content { padding: 1.5rem; }
 
-.card-content h6 {
-    color: var(--teal-primary);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
+.card-content h6 { color: var(--teal-primary); font-weight: 600; margin-bottom: 0.5rem; }
 
-.price {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 1rem;
-}
+.price { font-size: 1.25rem; font-weight: 700; color: #333; margin-bottom: 1rem; }
 
-.color-options {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
+.color-options { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 
-.color-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+.color-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; transition: transform 0.2s; }
 
-.color-dot:hover {
-    transform: scale(1.2);
-}
+.color-dot:hover { transform: scale(1.2); }
 
-.btn-buy {
-    width: 100%;
-    background: var(--teal-primary);
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
+.btn-buy { width: 100%; background: var(--teal-primary); color: white; border: none; padding: 0.75rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
 
-.btn-buy:hover {
-    background: var(--teal-light);
-}
+.btn-buy:hover { background: var(--teal-light); }
 
 /* Responsive Design */
 @@media (max-width: 992px) {
-    .plantify-hero-left {
-        min-height: auto;
-        padding: 3rem 2rem;
-    }
+    .plantify-hero-left { min-height: auto; padding: 3rem 2rem; }
     
-    .hero-main-title {
-        font-size: 2.5rem;
-    }
+    .hero-main-title { font-size: 2.5rem; }
     
-    .hero-featured-grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-    }
+    .hero-featured-grid { grid-template-columns: 1fr; max-width: 100%; }
     
     .product-grid-new,
-    .product-grid-stands {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .product-grid-stands { grid-template-columns: repeat(2, 1fr); }
 }
 
 @@media (max-width: 768px) {
     .plantify-hero-left,
-    .plantify-content-right {
-        padding: 2rem 1rem;
-    }
+    .plantify-content-right { padding: 2rem 1rem; }
     
-    .hero-main-title {
-        font-size: 2rem;
-    }
+    .hero-main-title { font-size: 2rem; }
     
-    .hero-buttons {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
+    .hero-buttons { flex-direction: column; align-items: flex-start; gap: 1rem; }
     
     .product-grid-new,
-    .product-grid-stands {
-        grid-template-columns: 1fr;
-    }
+    .product-grid-stands { grid-template-columns: 1fr; }
     
-    .featured-products-grid {
-        grid-template-columns: 1fr;
-    }
+    .featured-products-grid { grid-template-columns: 1fr; }
 }
 </style>
